@@ -144,7 +144,7 @@ int main(void)
 			if(bytesReceived1 != -1 && (bytesReceived1 != 2))
 			{
 				string(buf, 0, bytesReceived1);
-				buf[strlen(buf) - 1] = '\0';
+				buf[strlen(buf)] = '\0';
 				printf("\nClient 1: %s", buf);
 				printf("\nbyte: %i", bytesReceived1);
 				/*printf("\nClient 1: %c", (char*)bytesReceived1);
@@ -170,7 +170,7 @@ int main(void)
      		{
      			//cout << "Client 2 data: "<< string(buf, 0, bytesReceived2) << endl;
      			string(buf, 0, bytesReceived2);
-     			buf[strlen(buf) - 1] = '\0';
+     			buf[strlen(buf)] = '\0';
      			printf("\nClient 2: %s", buf);
      			printf("\nbyte: %i", bytesReceived2);
 			}
@@ -193,7 +193,7 @@ int main(void)
      		{
      			//cout << "Client 2 data: "<< string(buf, 0, bytesReceived2) << endl;
      			string(buf, 0, bytesReceived3);
-     			buf[strlen(buf) - 1] = '\0';
+     			buf[strlen(buf)] = '\0';
      			printf("\nClient 3: %s", buf);
      			printf("\nbyte: %i", bytesReceived3);
 			}
