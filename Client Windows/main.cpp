@@ -9,7 +9,7 @@ using namespace std;
 
 int main(void)
 {
-	string ipAddress = "127.0.01";			// IP Address of the server
+	char ipAddress[] = "127.0.01";			// IP Address of the server
 	int port = 54000;						// Listening port # on the server
 
 	// Initialize WinSock
@@ -30,15 +30,23 @@ int main(void)
 		WSACleanup();
 		return -2;
 	}
-
+	cout << "Socket created!" << endl;
+	cout << "Configuring connection..." << endl;
 	// Fill in a hint structure
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(port);
 	//inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
 	//inet_ntoa(client2.sin_addr)
-	//hint.sin_addr.S_un.S_addr = INADDR_ANY;
-
+	//hint.sin_addr.S_un.S_addr = ;
+	hint.sin_addr.s_addr = inet_addr(ipAddress);
+	//Convert IP adress in string
+	char bufs[1024];
+	ZeroMemory(bufs, 1024); // same as memset(host, 0, NI_MAXHOST);
+	strcpy (bufs, inet_ntoa(hint.sin_addr));
+    cout << bufs << " connected on port " <<
+    ntohs(hint.sin_port) << endl;
+    
 	// Connect to server
 	int connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
 	if (connResult == SOCKET_ERROR)

@@ -1,6 +1,6 @@
 [Project]
-FileName=Project1Winsock.dev
-Name=Project1Winsock
+FileName=ProjectTCPWindowsClient.dev
+Name=ProjectTCPWindowsClient
 Type=1
 Ver=2
 ObjFiles=
@@ -19,7 +19,7 @@ ObjectOutput=
 LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
-OverrideOutputName=Project1Winsock.exe
+OverrideOutputName=ProjectTCPWindowsClient.exe
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
