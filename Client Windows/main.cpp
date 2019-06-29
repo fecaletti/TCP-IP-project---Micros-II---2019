@@ -2,6 +2,7 @@
 #include <string>
 #include <winsock2.h>
 #include <stdio.h>
+#include <time.h>
 //#include <WS2tcpip.h>
 //#pragma comment(lib, "ws2_32.lib")
 
@@ -60,31 +61,55 @@ int main(void)
 	// Do-while loop to send and receive data
 	char buf[4096];
 	string userInput;
-
-	do
+	bool transmissionStatus = 0;
+	char startByte[] = "/start";
+	if(!transmissionStatus)
 	{
-		// Prompt the user for some text
-		cout << "> ";
-		getline(cin, userInput);
-
-		if (userInput.size() > 0)		// Make sure the user has typed in something
+		// Wait for start byte
+		ZeroMemory(buf, 4096);
+		int bytesReceived = recv(sock, buf, 4096, 0);
+		if (bytesReceived > 0)
 		{
-			// Send the text
-			int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-			if (sendResult != SOCKET_ERROR)
+			//Convert the received data to string
+			string(buf, 0, bytesReceived);
+			buf[strlen(buf)] = '\0';
+			
+			int confirmation = 0;
+			for(int i = 0; i<strlen(buf); i++)
 			{
-				// Wait for response
-			/*	ZeroMemory(buf, 4096);
-				int bytesReceived = recv(sock, buf, 4096, 0);
-				if (bytesReceived > 0)
-				{
-					// Echo response to console
-				//	cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-				}*/
+				if(buf[i] == startByte[i]) confirmation ++;
 			}
+			printf("Confirmation value: %i\n", confirmation);
+			if(confirmation == 6)
+			{
+				transmissionStatus = 1;
+				cout << "Start byte confirmed! Starting transmission..." << endl;
+			 } 
+			// Echo response to console
+		//	cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
 		}
+	}
+	if(transmissionStatus)
+	{
+		do
+		{	
+			// Prompt the user for some text
+			cout << "> ";
+			getline(cin, userInput);
 	
-	} while (userInput.size() > 0);
+			if (userInput.size() > 0)		// Make sure the user has typed in something
+			{
+				// Send the text
+				int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+				if (sendResult != SOCKET_ERROR)
+				{
+					//Wait for info
+				}
+			}
+		} while (userInput.size() > 0);
+	}	
+	
+
 
 	// Gracefully close down everything
 	closesocket(sock);
