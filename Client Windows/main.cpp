@@ -59,55 +59,87 @@ int main(void)
 	}
 
 	// Do-while loop to send and receive data
+	//Create timers to control the data sending only in 15 seconds;
+	time_t timer1;
+	time_t timer2;
 	char buf[4096];
 	string userInput;
 	bool transmissionStatus = 0;
 	char startByte[] = "/start";
-	if(!transmissionStatus)
+	int timStatus = 0;
+	while(true)
 	{
-		// Wait for start byte
-		ZeroMemory(buf, 4096);
-		int bytesReceived = recv(sock, buf, 4096, 0);
-		if (bytesReceived > 0)
+		if(!transmissionStatus)
 		{
-			//Convert the received data to string
-			string(buf, 0, bytesReceived);
-			buf[strlen(buf)] = '\0';
-			
-			int confirmation = 0;
-			for(int i = 0; i<strlen(buf); i++)
+			// Wait for start byte
+			ZeroMemory(buf, 4096);
+			int bytesReceived = recv(sock, buf, 4096, 0);
+			if (bytesReceived > 0)
 			{
-				if(buf[i] == startByte[i]) confirmation ++;
+				//Convert the received data to string
+				string(buf, 0, bytesReceived);
+				buf[strlen(buf)] = '\0';
+				
+				int confirmation = 0;
+				for(int i = 0; i<strlen(buf); i++)
+				{
+					if(buf[i] == startByte[i]) confirmation ++;
+				}
+				printf("Confirmation value: %i\n", confirmation);
+				if(confirmation == 6)
+				{
+					transmissionStatus = 1;
+					cout << "Start byte confirmed! Starting transmission..." << endl;
+				 } 
+				// Echo response to console
+			//	cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
 			}
-			printf("Confirmation value: %i\n", confirmation);
-			if(confirmation == 6)
-			{
-				transmissionStatus = 1;
-				cout << "Start byte confirmed! Starting transmission..." << endl;
-			 } 
-			// Echo response to console
-		//	cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
+		}
+		if(transmissionStatus)
+		{
+			do
+			{	
+				//Check timer status, if timer status == 0, let the user sent a message.
+				if(!timStatus)
+				{
+					// Prompt the user for some text
+					cout << "> ";
+					getline(cin, userInput);
+			
+					if (userInput.size() > 0)		// Make sure the user has typed in something
+					{
+						// Send the text
+						int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+						if (sendResult != SOCKET_ERROR)
+						{
+							//Wait for info
+						}
+					}
+					//After the user send the message, timerstatus are changed to 1.
+					timStatus = 1;
+				}
+				else if(timStatus == 1)
+				{
+					//Get the current time about executing the program.
+					time(&timer1);
+					timStatus = 2;
+				}
+				else if(timStatus == 2)
+				{
+					//Get the current time again and compare with the time gotten before.
+					//If the resulting time is 15, the timStatus are changed to 0 again.
+					//This mode, the user only can send messages every 15 seconds.
+					time(&timer2);
+					double timePassed = timer2 - timer1;
+					if(timePassed == 15)
+					{
+						timStatus = 0;
+					}
+				}
+			} while (userInput.size() > 0);
 		}
 	}
-	if(transmissionStatus)
-	{
-		do
-		{	
-			// Prompt the user for some text
-			cout << "> ";
-			getline(cin, userInput);
 	
-			if (userInput.size() > 0)		// Make sure the user has typed in something
-			{
-				// Send the text
-				int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-				if (sendResult != SOCKET_ERROR)
-				{
-					//Wait for info
-				}
-			}
-		} while (userInput.size() > 0);
-	}	
 	
 
 
