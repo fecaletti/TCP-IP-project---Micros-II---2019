@@ -50,12 +50,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint16_t water_level;			/*!<Used to simulate a value for the water tank level*/
+volatile uint16_t water_level;			/*!<Used to simulate a value for the water tank level*/
 uint16_t ValueCH1; 				/*!<Takes the ADC channel 1 value and use it to set the water_level*/
 int amount_of_water=0;			/*!<Used to convert the value of ADC channel 1 to the amount of water we have on the water tank*/
 int timer=0;					/*!Counter that makes the program wait 15 seconds before transmit the data*/
-int a=0;
 uint8_t teste[50];
+uint8_t teste2[50];
 
 /* USER CODE END PV */
 
@@ -105,11 +105,10 @@ int main(void)
   MX_TIM10_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
   HAL_TIM_Base_Start(&htim2);
   HAL_TIM_Base_Start_IT(&htim10);
 
-  HAL_ADC_Start_DMA(&hadc1, water_level, 1);
+  HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
 
   HAL_UART_Init(&huart2);
 
@@ -119,13 +118,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  a++;
-	  if (timer==15)
-	  {
-		  HAL_UART_Transmit(&huart2, &a, 1, 10);
-		  HAL_UART_Transmit(&huart2, &amount_of_water, 1, 10);
-		  timer=0;
-	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -200,9 +193,12 @@ void SystemClock_Config(void)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	ValueCH1=water_level;
-	amount_of_water=(((45*water_level)/1023)*1000);
+	amount_of_water=(((45*ValueCH1)/1023)*1000);
 
-	HAL_ADC_Start_DMA(&hadc1, water_level, 1);
+	sprintf((char*)teste2, "\n\r Quantidade de agua: %i", ValueCH1);
+	HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
+
+	HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
 }
 
 /*! @brief Recive the ADC datas through the DMA.
@@ -219,7 +215,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance==TIM10)
 	{
 		timer++;
-		sprintf((char*)teste, "/n/rValor de tempo: %i", water_level);
+		//sprintf((char*)teste, "\n\r Valor de tempo: %i", timer);
+		//HAL_UART_Transmit(&huart2, (char*) teste, strlen((char*) teste), 10);
+		if (timer==15)
+		{
+			sprintf((char*)teste2, "\n\r Quantidade de agua: %i", amount_of_water);
+			HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
+			//HAL_UART_Transmit(&huart2, amount_of_water, 1, 10);
+			timer=0;
+		}
 		__HAL_TIM_CLEAR_FLAG(&htim10, TIM_FLAG_UPDATE);
 	}
 }
