@@ -118,8 +118,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		sprintf((char*)teste2, "\n\r Quantidade de agua: %i", ValueCH1);
-		HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -195,6 +194,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	ValueCH1=water_level;
 	amount_of_water=(((45*ValueCH1)/1023)*1000);
+
+	sprintf((char*)teste2, "\n\r Quantidade de agua: %i", ValueCH1);
+	HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
 
 	HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
 }

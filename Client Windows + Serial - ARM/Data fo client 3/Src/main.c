@@ -195,9 +195,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	ValueCH1=water_level;
 	amount_of_water=(((45*ValueCH1)/1023)*1000);
 
-	sprintf((char*)teste2, "\n\r Quantidade de agua: %i", ValueCH1);
-	HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
-
 	HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
 }
 
@@ -219,7 +216,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		//HAL_UART_Transmit(&huart2, (char*) teste, strlen((char*) teste), 10);
 		if (timer==15)
 		{
-			sprintf((char*)teste2, "\n\r Quantidade de agua: %i", amount_of_water);
+			sprintf((char*)teste2, "\n\r Quantidade de agua: %i L", amount_of_water);
 			HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
 			//HAL_UART_Transmit(&huart2, amount_of_water, 1, 10);
 			timer=0;
