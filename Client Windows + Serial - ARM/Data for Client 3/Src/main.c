@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : Water tank level simulator
   ******************************************************************************
   * @attention
   *
@@ -48,10 +48,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-int water_level[1]=0;		/*!<Used to simulate a value for the water tank level*/
-uint16_t ValueCH1; 			/*!<Takes the ADC channel 1 value and use it to set the water_level*/
-int amount_of_water=0;		/*!<Used to convert the value of ADC channel 1 to the amount of water we have on the water tank*/
-int timer=0;				/*!Counter that makes the program wait 15 seconds before transmit the data*/
+uint16_t water_level;			/*!<Used to simulate a value for the water tank level*/
+uint16_t ValueCH1; 				/*!<Takes the ADC channel 1 value and use it to set the water_level*/
+int amount_of_water=0;			/*!<Used to convert the value of ADC channel 1 to the amount of water we have on the water tank*/
+int timer=0;					/*!Counter that makes the program wait 15 seconds before transmit the data*/
 int a=0;
 
 /* USER CODE END PV */
@@ -190,8 +190,8 @@ void SystemClock_Config(void)
  * */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
-	ValueCH1=water_level[0];
-	amount_of_water=((45*water_level)/1023);
+	ValueCH1=water_level;
+	amount_of_water=(((45*water_level)/1023)*1000);
 
 	HAL_ADC_Start_DMA(&hadc1, water_level, 1);
 }
