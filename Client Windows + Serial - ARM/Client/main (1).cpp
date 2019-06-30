@@ -6,25 +6,6 @@
 //#include <myconio.h>
 #include <conio.h>
 
-unsigned int valorZ,valorX,valorY;
-
-void verifica_joystick(void)
-{
-    sf::Joystick::update();
-
-    if(sf::Joystick::isConnected(0))
-    {
-        sf::Joystick::update();
-		valorZ = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
-		printf("Eixo Z: %d\n", valorZ);
-		valorX = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
-		printf("Eixo X: %d\n", valorX);
-		valorY = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y);
-		printf("Eixo Y: %d\n", valorY);
-		system("cls");
-    }
-}
-
 HANDLE AbreComm(char *nomecom, int baudrate)
 {
     HANDLE hcom; //cria um ponteiro de nome hcom
@@ -75,27 +56,19 @@ HANDLE AbreComm(char *nomecom, int baudrate)
 int main()
 {
 
-   /* HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
+   HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
     unsigned long n;
-    char *ncom="COM3",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
+    char *ncom="COM4", c=1, l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
     int baud=115200; //define a taxa de transmissão
     char dado[1], dado2[1]; //cria o buffer de programa, variável do programa
     hcom=AbreComm(ncom,baud); //abre o aquivo e relaciona com ponteiro
     if(hcom==INVALID_HANDLE_VALUE) {getch();return 1;} //se não abriu arquivo/porta,
-                                                       // encerra o programa*/
+                                                       // encerra o programa
     while(1)
     {
-       verifica_joystick();
-       /*dado[0] = 'Z';
-       WriteFile(hcom,dado, 1, &n, NULL);
-       dado[0] = valorZ;
-       WriteFile(hcom,dado, 1, &n, NULL);
-       dado[0] = 'X';
-       WriteFile(hcom,dado, 1, &n, NULL);
-       dado[0] = valorX;
-       WriteFile(hcom,dado, 1, &n, NULL);*/
+       ReadFile(hcom, dado, 1, &n, NULL); // le um dado do arquivo/porta
     }
 
-    //CloseHandle(hcom); //fecha porta
+    CloseHandle(hcom); //fecha porta
     return 0;
 }
