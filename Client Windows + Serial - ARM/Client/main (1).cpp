@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <windows.h>
 //#include <conio2.h>
 #include <stdio.h>
@@ -56,7 +55,7 @@ HANDLE AbreComm(char *nomecom, int baudrate)
 int main()
 {
 
-   HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
+ 	HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
     unsigned long n;
     char *ncom="COM4", c=1, l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
     int baud=115200; //define a taxa de transmissão
