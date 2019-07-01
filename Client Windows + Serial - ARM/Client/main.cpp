@@ -150,7 +150,7 @@ int main(void)
     hcom=AbreComm(ncom,baud); //abre o aquivo e relaciona com ponteiro
     if(hcom==INVALID_HANDLE_VALUE) {getch();return 1;} //se não abriu arquivo/porta,
                                                        // encerra o programa
-    printf("Terminal %s %dbaud\t\t\t\t\t\tESC para sair", ncom, baud);
+   // printf("Terminal %s %dbaud\t\t\t\t\t\tESC para sair", ncom, baud);
     if (transmissionStatus)
     {
     do{
@@ -175,7 +175,7 @@ int main(void)
 		// Send the text
 		if (flag)
 		{
-			int sendResult = send(sock, dado, userInput.size() + 1, 0);
+			int sendResult = send(sock, dado, sizeof(*dado), 0);
 			if (sendResult != SOCKET_ERROR)
 			{
 				//Wait for info
