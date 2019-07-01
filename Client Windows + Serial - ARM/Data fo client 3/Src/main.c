@@ -212,11 +212,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance==TIM10)
 	{
 		timer++;
-		//sprintf((char*)teste, "\n\r Valor de tempo: %i", timer);
-		//HAL_UART_Transmit(&huart2, (char*) teste, strlen((char*) teste), 10);
 		if (timer==15)
 		{
-			sprintf((char*)teste2, "\n\r Quantidade de agua: %i L", amount_of_water);
+			sprintf((char*)teste2, "\n\r Quantidade de agua: %iL", amount_of_water);
 			HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
 			//HAL_UART_Transmit(&huart2, amount_of_water, 1, 10);
 			timer=0;

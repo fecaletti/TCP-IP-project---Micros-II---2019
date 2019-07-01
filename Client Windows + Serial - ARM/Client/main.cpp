@@ -142,6 +142,7 @@ int main(void)
 	}
 	
 	HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
+	bool flag=0;
     unsigned long n;
     char *ncom="COM4",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
     int baud=115200; //define a taxa de transmissão
@@ -149,7 +150,6 @@ int main(void)
     hcom=AbreComm(ncom,baud); //abre o aquivo e relaciona com ponteiro
     if(hcom==INVALID_HANDLE_VALUE) {getch();return 1;} //se não abriu arquivo/porta,
                                                        // encerra o programa
-    //gotoxy(1,24);
     printf("Terminal %s %dbaud\t\t\t\t\t\tESC para sair", ncom, baud);
     if (transmissionStatus)
     {
@@ -163,23 +163,25 @@ int main(void)
        // NULL = sem sobreposição/overlapped
        ReadFile(hcom, dado, 1, &n, NULL); // le um dado do arquivo/porta
        //-----------------------------------------------------------------------
+       if (*dado=='\n') flag=1;
        if(n) // se dado?
        {
              if(c>80) c=1, l++;
              if(l>15) l=1;
-            // gotoxy(c++,l);
-            //textcolor(3);
              printf("%c",*dado); //escreve na tela
             if(*dado=='\n') {c=1; l++;}
-            //textcolor(7);
        }
 
 		// Send the text
-		int sendResult = send(sock, dado, userInput.size() + 1, 0);
-		if (sendResult != SOCKET_ERROR)
+		if (flag)
 		{
-			//Wait for info
+			int sendResult = send(sock, dado, userInput.size() + 1, 0);
+			if (sendResult != SOCKET_ERROR)
+			{
+				//Wait for info
+			}
 		}
+		if (*dado=='L') flag=0;
 
     }while(*dado!=27); //se dado diferente de ctrl-X, retorna
     CloseHandle(hcom); //fecha porta
