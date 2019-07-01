@@ -7,11 +7,26 @@
 #include <string.h>
 #include <string>
 #include <ctime>
+#include <wiringPi.h>
 
 using namespace std;
 
+#define Key_A 25
+#define Key_B 24
+#define Key_C 23
+#define Key_D 7
+
 int main()
 {
+	//Configure GPIO//
+	wiringPiSetup();
+	pinMode(Key_A, INPUT);
+	pinMode(Key_B, INPUT);
+	pinMode(Key_C, INPUT);
+	pinMode(Key_D, INPUT);
+
+	int buttonPressed = 0;
+	///////////////////////////////////////Starting TCP connection
     // Create a socket
     int socket1 = socket(AF_INET, SOCK_STREAM, 0);
     if(socket1 == -1)
@@ -33,18 +48,23 @@ int main()
     {
         return 1;
     }
+    ///////////////////////////////////////////////////////////////
+
 
     //While loop
     char buf[4096];
     time_t timer1;
 	time_t timer2;
 	string userInput;
+	char message[100];
 	bool transmissionStatus = 0;
 	char startByte[] = "/start";
 	int timStatus = 0;
 
     while (true)
     {
+    	buttonPressed = (digitalRead(Key_A)) + (digitalRead(Key_B)) + (digitalRead(Key_C)) + (digitalRead(Key_D));
+    	cout << "Botões pressionados " << buttonPressed << endl;
         memset(buf, 0, 4096);
 		if(!transmissionStatus)
 		{
@@ -73,16 +93,16 @@ int main()
 		}
 		if(transmissionStatus)
 		{
-			do
-			{
+			//do
+			//{
 				//Check timer status, if timer status == 0, let the user sent a message.
 				if(!timStatus)
 				{
-					// Prompt the user for some text
+					/*// Prompt the user for some text
 					cout << "> ";
-					getline(cin, userInput);
+					getline(cin, userInput);*/
 
-					if (userInput.size() > 0)		// Make sure the user has typed in something
+					/*if (userInput.size() > 0)		// Make sure the user has typed in something
 					{
 						// Send the text
 						int sendResult = send(socket1, userInput.c_str(), userInput.size() + 1, 0);
@@ -90,7 +110,18 @@ int main()
 						{
 							//Wait for info
 						}
+					}*/
+					//Store the message in a string buffer.
+					sprintf(message, "Chaves pressionadas: %i", buttonPressed);
+
+					//Send the value of the Keys pressed.
+					int sendResult = send(socket1, message, strlen(message) + 1, 0);
+					if (sendResult != -1)
+					{
+						//Wait for info
 					}
+	
+
 					//After the user send the message, timerstatus are changed to 1.
 					timStatus = 1;
 				}
@@ -107,12 +138,12 @@ int main()
 					//This mode, the user only can send messages every 15 seconds.
 					time(&timer2);
 					double timePassed = timer2 - timer1;
-					if(timePassed == 1)
+					if(timePassed == 15)
 					{
 						timStatus = 0;
 					}
 				}
-			} while (userInput.size() > 0);
+			//} //while (userInput.size() > 0);
 		}
 
 
