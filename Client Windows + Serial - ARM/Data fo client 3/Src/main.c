@@ -54,8 +54,10 @@ volatile uint16_t water_level;			/*!<Used to simulate a value for the water tank
 uint16_t ValueCH1; 				/*!<Takes the ADC channel 1 value and use it to set the water_level*/
 int amount_of_water=0;			/*!<Used to convert the value of ADC channel 1 to the amount of water we have on the water tank*/
 int timer=0;					/*!Counter that makes the program wait 15 seconds before transmit the data*/
-uint8_t teste[50];
-uint8_t teste2[50];
+uint8_t aux[50];
+int string_size;
+int dado=-1;
+
 
 /* USER CODE END PV */
 
@@ -214,9 +216,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		timer++;
 		if (timer==15)
 		{
-			sprintf((char*)teste2, "\n\r Quantidade de agua: %iL", amount_of_water);
-			HAL_UART_Transmit(&huart2, (char*) teste2, strlen((char*) teste2), 10);
-			//HAL_UART_Transmit(&huart2, amount_of_water, 1, 10);
+			sprintf((char*)aux, "\n\rCliente 3: Quantidade de agua: %iL", amount_of_water);
+			HAL_UART_Transmit(&huart2, (char*) aux, strlen((char*) aux), 10);
 			timer=0;
 		}
 		__HAL_TIM_CLEAR_FLAG(&htim10, TIM_FLAG_UPDATE);

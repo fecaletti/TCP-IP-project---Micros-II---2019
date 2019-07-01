@@ -175,7 +175,7 @@ int main(void)
 		// Send the text
 		if (flag)
 		{
-			int sendResult = send(sock, dado, sizeof(*dado), 0);
+			int sendResult = send(sock, dado, sizeof(dado), 0);
 			if (sendResult != SOCKET_ERROR)
 			{
 				//Wait for info
