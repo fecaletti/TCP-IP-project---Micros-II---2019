@@ -4,10 +4,16 @@ CursorRow=1
 TopLine=1
 LeftChar=1
 [Editors]
-Order=0
+Order=
 Focused=0
 [Editor_0]
+<<<<<<< HEAD
 CursorCol=19
 CursorRow=175
 TopLine=167
+=======
+CursorCol=21
+CursorRow=147
+TopLine=155
+>>>>>>> 6a241b0793663c9b84ff9cc9dc14a3715680b1df
 LeftChar=1

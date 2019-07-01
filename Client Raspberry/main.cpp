@@ -1,3 +1,10 @@
+//Trabalho Winsock -- 2019
+//4411 - Equipe Alpha
+//Ana Paula Schneider, Eduarda Basotti, Fernando Caletti, Kauê Portella, Gustavo Wingert e Henrique Schumacher.
+//Linux client --> Raspberry Pi
+
+
+
 #include <iostream>
 #include <sys/types.h>
 #include <unistd.h>
