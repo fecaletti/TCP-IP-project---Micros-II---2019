@@ -143,9 +143,9 @@ int main(void)
 	
 	HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
 	bool flag=0;
-	char flag2='Y';
+	char flag2[1];
     unsigned long n;
-    char *ncom="COM4",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
+    char *ncom="COM3",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
     int baud=115200; //define a taxa de transmissão
     char dado[1], dado2[1]; //cria o buffer de programa, variável do programa
     hcom=AbreComm(ncom,baud); //abre o aquivo e relaciona com ponteiro
@@ -154,7 +154,8 @@ int main(void)
    // printf("Terminal %s %dbaud\t\t\t\t\t\tESC para sair", ncom, baud);
     if (transmissionStatus)
     {
-    	WriteFile(hcom, &flag2, 1, &n, NULL);
+    	//flag2[0] = 'Y';
+    	//WriteFile(hcom, flag2, 1, &n, NULL);
 	    do{
 	       //-----------------------------------------------------------------------
 	       // função para ler um dado da porta

@@ -117,7 +117,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim10);
 
   HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
-  HAL_UART_Receive_IT(&huart2, rxBuff, sizeof(rxBuff));
+  HAL_UART_Receive_IT(&huart2, &rxBuff, sizeof(rxBuff));
 
   HAL_UART_Init(&huart2);
 
@@ -223,12 +223,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		timer++;
 		if (timer==15)
 		{
-			if(startFlag == 1)
-			{
+			//if(startFlag == 1)
+			//{
 				sprintf((char*)aux, "\n\rClient 3: Quantidade de agua: %iL", amount_of_water);
 				HAL_UART_Transmit(&huart2, (char*) aux, strlen((char*) aux), 10);
 				timer=0;
-			}
+			//}
 		}
 		__HAL_TIM_CLEAR_FLAG(&htim10, TIM_FLAG_UPDATE);
 	}
@@ -239,6 +239,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		startFlag = 1;
 	}
+	HAL_UART_Receive_IT(&huart2, &rxBuff, sizeof(rxBuff));
 }
 
 /* USER CODE END 4 */
