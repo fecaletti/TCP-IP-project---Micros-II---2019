@@ -1,3 +1,10 @@
+//Trabalho Winsock -- 2019
+//4411 - Equipe Alpha
+//Ana Paula Schneider, Eduarda Basotti, Fernando Caletti, Kauê Portella, Gustavo Wingert e Henrique Schumacher.
+//Windows Client w/ serial comunication.
+
+
+
 #include <conio.h>
 //#include <conio2.h>
 #include <iostream>
@@ -144,7 +151,7 @@ int main(void)
 	HANDLE hcom; //cria o ponteiro, área de memória intermediária, buffer
 	bool flag=0;
     unsigned long n;
-    char *ncom="COM4",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
+    char *ncom="COM3",c=1,l=1, c2=1; //define nome do arquivo, no nosso caso a porta usada
     int baud=115200; //define a taxa de transmissão
     char dado[1], dado2[1]; //cria o buffer de programa, variável do programa
     hcom=AbreComm(ncom,baud); //abre o aquivo e relaciona com ponteiro

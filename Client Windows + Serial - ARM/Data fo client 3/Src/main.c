@@ -1,3 +1,8 @@
+//Trabalho Winsock -- 2019
+//4411 - Equipe Alpha
+//Ana Paula Schneider, Eduarda Basotti, Fernando Caletti, Kauê Portella, Gustavo Wingert e Henrique Schumacher.
+//Server
+
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -57,7 +62,8 @@ int timer=0;					/*!Counter that makes the program wait 15 seconds before transm
 uint8_t aux[50];
 int string_size;
 int dado=-1;
-
+volatile uint8_t rxBuff = 0;
+volatile uint8_t startFlag = 0;
 
 /* USER CODE END PV */
 
@@ -111,6 +117,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim10);
 
   HAL_ADC_Start_DMA(&hadc1, &water_level, 1);
+  HAL_UART_Receive_IT(&huart2, rxBuff, sizeof(rxBuff));
 
   HAL_UART_Init(&huart2);
 
@@ -216,11 +223,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		timer++;
 		if (timer==15)
 		{
-			sprintf((char*)aux, "\n\rCliente 3: Quantidade de agua: %iL", amount_of_water);
-			HAL_UART_Transmit(&huart2, (char*) aux, strlen((char*) aux), 10);
-			timer=0;
+			if(startFlag == 1)
+			{
+				sprintf((char*)aux, "\n\rClient 3: Quantidade de agua: %iL", amount_of_water);
+				HAL_UART_Transmit(&huart2, (char*) aux, strlen((char*) aux), 10);
+				timer=0;
+			}
 		}
 		__HAL_TIM_CLEAR_FLAG(&htim10, TIM_FLAG_UPDATE);
+	}
+}
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(rxBuff == 'Y')
+	{
+		startFlag = 1;
 	}
 }
 

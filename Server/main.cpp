@@ -1,3 +1,9 @@
+//Trabalho Winsock -- 2019
+//4411 - Equipe Alpha
+//Ana Paula Schneider, Eduarda Basotti, Fernando Caletti, Kauê Portella, Gustavo Wingert e Henrique Schumacher.
+//Server
+
+
 #include <iostream>
 #include <string.h>
 #include <winsock2.h>
@@ -198,7 +204,7 @@ int main(void)
  			buf[strlen(buf)] = '\0';
  			//Print data reived from client 1.
  			SetConsoleTextAttribute(console, 13);
- 			printf("\nClient 3: %s", buf);
+ 			printf("%s", buf);
 		}
 	}
 
