@@ -2,9 +2,8 @@
 #include <string.h>
 #include <winsock2.h>
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
-#include <conio2.h>
+#include <conio.h>
 
 
 using namespace std;
@@ -13,6 +12,9 @@ using namespace std;
 #define NI_MAXSERV 1024
 #define timeout_in_seconds 1
 
+//Handle to change text color
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // For use of SetConsoleTextAttribute()
+
 int main(void)
 {
 	//Initialize winSock
@@ -20,7 +22,7 @@ int main(void)
 	// Set parameters and create data buffers.
 	WSADATA wsData;
 	WORD ver = MAKEWORD(2, 2);
-	textcolor (5);
+
 	cerr << "Initialising..." << endl;
 
 	int wsOk = WSAStartup(ver, &wsData);
@@ -157,6 +159,7 @@ int main(void)
 			string(buf, 0, bytesReceived1);
 			buf[strlen(buf)] = '\0';
 			//Print data reived from client 1.
+			SetConsoleTextAttribute(console, 4);
 			printf("\nClient 1: %s", buf);
 		}
 		//Receiving from Client 2:		
@@ -175,6 +178,7 @@ int main(void)
  			string(buf, 0, bytesReceived2);
  			buf[strlen(buf)] = '\0';
  			//Print data reived from client 1.
+ 			SetConsoleTextAttribute(console, 3);
  			printf("\nClient 2: %s", buf);
 		} 		
  		//Receiving for cleint 3: 		
@@ -193,6 +197,7 @@ int main(void)
  			string(buf, 0, bytesReceived3);
  			buf[strlen(buf)] = '\0';
  			//Print data reived from client 1.
+ 			SetConsoleTextAttribute(console, 2);
  			printf("\nClient 3: %s", buf);
 		}
 	}
