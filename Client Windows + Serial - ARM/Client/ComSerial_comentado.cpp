@@ -87,7 +87,7 @@ int main(void)
              if(c>80) c=1, l++;
              if(l>15) l=1;
              gotoxy(c++,l);
-            textcolor(12);
+            textcolor(3);
              printf("%c",*dado); //escreve na tela
             if(*dado=='\n') {c=1; l++;}
             textcolor(7);
