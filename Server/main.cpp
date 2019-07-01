@@ -122,7 +122,7 @@ int main(void)
     do
     {
     	char cmd = 0;
-    	printf("\nIniciar a transmissão? [Y/N]\n");
+    	printf("\nStart transmission? [Y/N]\n");
 		scanf("%c", &cmd);
 		if(cmd == 'Y') statusTx = 1;
 		else
