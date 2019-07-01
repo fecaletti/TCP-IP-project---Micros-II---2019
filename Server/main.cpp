@@ -178,7 +178,7 @@ int main(void)
  			string(buf, 0, bytesReceived2);
  			buf[strlen(buf)] = '\0';
  			//Print data reived from client 1.
- 			SetConsoleTextAttribute(console, 3);
+ 			SetConsoleTextAttribute(console, 2);
  			printf("\nClient 2: %s", buf);
 		} 		
  		//Receiving for cleint 3: 		
@@ -197,7 +197,7 @@ int main(void)
  			string(buf, 0, bytesReceived3);
  			buf[strlen(buf)] = '\0';
  			//Print data reived from client 1.
- 			SetConsoleTextAttribute(console, 2);
+ 			SetConsoleTextAttribute(console, 13);
  			printf("\nClient 3: %s", buf);
 		}
 	}
