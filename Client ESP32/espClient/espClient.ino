@@ -35,7 +35,7 @@ void setup()
   delay(10);
 
   // We start by connecting to a WiFi network
-  WiFiMulti.addAP("kaue_puto", "fefogayyy");
+  WiFiMulti.addAP("raspberryfefo", "hqztwwiw");
 
   Serial.println();
   Serial.println();
@@ -66,7 +66,7 @@ void loop()
   }
 
   const uint16_t port = 54000;
-  const char * host = "192.168.137.1"; // ip or dns
+  const char * host = "192.168.0.5"; // ip or dns
 
   if (start == 0)
   {
